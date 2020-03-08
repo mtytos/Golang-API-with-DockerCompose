@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/go-chi/chi"
 	"log"
 	"net/http"
@@ -42,7 +43,7 @@ func test2(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Проерка работоспособности метода по регистрации Возврата ТСД
+// Проерка работоспособности метода
 func test3(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("Got test request3")
@@ -57,6 +58,18 @@ func test3(w http.ResponseWriter, r *http.Request) {
 		log.Println("Success3")
 	}
 }
+
+
+// Проерка работоспособности метода по регистрации Возврата ТСД
+func test4(w http.ResponseWriter, r *http.Request) {
+
+	response, err := api.AllTermData2()
+	if err != nil {
+		log.Fatal("Error: ", err)
+	}
+	fmt.Fprintf(w, string(response))
+}
+
 
 func main()  {
 	postgres.InitDBTables()
@@ -96,6 +109,10 @@ func main()  {
 
 	router.Route("/test3", func(r chi.Router) {
 		r.Get("/", test3)
+	})
+
+	router.Route("/test4", func(r chi.Router) {
+		r.Get("/", test4)
 	})
 
 	http.ListenAndServe(":" + port, router)

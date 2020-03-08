@@ -107,3 +107,12 @@ func WhoUseTerminal(w http.ResponseWriter, r *http.Request) {
 		w.Write(jsonData)
 	}
 }
+
+
+ // DEBUG
+func AllTermData2() ([]byte, error) {
+
+	jsonData := postgres.GetJournalData()
+
+	return json.MarshalIndent(jsonData, " ", " ")
+}
