@@ -42,6 +42,22 @@ func test2(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Проерка работоспособности метода по регистрации Возврата ТСД
+func test3(w http.ResponseWriter, r *http.Request) {
+
+	log.Println("Got test request3")
+
+	data := []byte(`{"terminalId":"109"}`)
+	request := bytes.NewReader(data)
+	_, err := http.Post("http://localhost:8080/InfoAboutTerm", "application/json", request)
+	if err != nil {
+		log.Fatal("Error: ", err)
+	} else {
+		w.Write([]byte("Журнал с историей терминала!"))
+		log.Println("Success3")
+	}
+}
+
 func main()  {
 	postgres.InitDBTables()
 
@@ -57,20 +73,17 @@ func main()  {
 		r.Post("/", api.UnregisterTerm)
 	})
 
-	//// Тут надо вернуть данные в JSON но я пока не знаю как и Golang ругается
-	//router.Route("/AllTermData", func(r chi.Router) {
-	//	r.Post("/", api.AllTermData)
-	//})
+	router.Route("/AllTermData", func(r chi.Router) {
+		r.Post("/", api.AllTermData)
+	})
 
-	//// Тут надо вернуть данные в JSON но я пока не знаю как и Golang ругается
-	//router.Route("/InfoAboutTerm", func(r chi.Router) {
-	//	r.Post("/", api.InfoAboutTerm)
-	//})
+	router.Route("/InfoAboutTerm", func(r chi.Router) {
+		r.Post("/", api.InfoAboutTerm)
+	})
 
-	//// Тут надо вернуть данные в JSON но я пока не знаю как и Golang ругается
-	//router.Route("/WhoUseTerminal", func(r chi.Router) {
-	//	r.Post("/", api.WhoUseTerminal)
-	//})
+	router.Route("/WhoUseTerminal", func(r chi.Router) {
+		r.Post("/", api.WhoUseTerminal)
+	})
 
 	// Роуты для проверки
 	router.Route("/test", func(r chi.Router) {
@@ -79,6 +92,10 @@ func main()  {
 
 	router.Route("/test2", func(r chi.Router) {
 		r.Get("/", test2)
+	})
+
+	router.Route("/test3", func(r chi.Router) {
+		r.Get("/", test3)
 	})
 
 	http.ListenAndServe(":" + port, router)
