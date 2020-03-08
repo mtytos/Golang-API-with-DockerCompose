@@ -10,32 +10,34 @@ import (
 	"terminal_api/postgres"
 )
 
+// Проверка работоспособности метода по Регистрации выдачи ТСД
 func test(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("Got test request")
 
-	data := []byte(`{"name":"Pe","locationId":"969","terminalId":"676"}`)
+	data := []byte(`{"name":"John","locationId":"911","terminalId":"109"}`)
 	request := bytes.NewReader(data)
 	_, err := http.Post("http://localhost:8080/registerTerm", "application/json", request)
 	if err != nil {
 		log.Fatal("Error: ", err)
 	} else {
-		w.Write([]byte("11 I will try to do something!"))
+		w.Write([]byte("Сотрудник зарегистрирован в журнале, ТСД выдан!"))
 		log.Println("Success")
 	}
 }
 
+// Проерка работоспособности метода по регистрации Возврата ТСД
 func test2(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("Got test request2")
 
-	data := []byte(`{"name":"Pe","locationId":"969","terminalId":"676"}`)
+	data := []byte(`{"name":"John","locationId":"911","terminalId":"109"}`)
 	request := bytes.NewReader(data)
 	_, err := http.Post("http://localhost:8080/UnregisterTerm", "application/json", request)
 	if err != nil {
 		log.Fatal("Error: ", err)
 	} else {
-		w.Write([]byte("отправил данные для обновления!"))
+		w.Write([]byte("Сотрудник сдал ТСД, данные в журнале обновлены!"))
 		log.Println("Success2")
 	}
 }
@@ -55,8 +57,22 @@ func main()  {
 		r.Post("/", api.UnregisterTerm)
 	})
 
+	//// Тут надо вернуть данные в JSON но я пока не знаю как и Golang ругается
+	//router.Route("/AllTermData", func(r chi.Router) {
+	//	r.Post("/", api.AllTermData)
+	//})
 
+	//// Тут надо вернуть данные в JSON но я пока не знаю как и Golang ругается
+	//router.Route("/InfoAboutTerm", func(r chi.Router) {
+	//	r.Post("/", api.InfoAboutTerm)
+	//})
 
+	//// Тут надо вернуть данные в JSON но я пока не знаю как и Golang ругается
+	//router.Route("/WhoUseTerminal", func(r chi.Router) {
+	//	r.Post("/", api.WhoUseTerminal)
+	//})
+
+	// Роуты для проверки
 	router.Route("/test", func(r chi.Router) {
 		r.Get("/", test)
 	})
@@ -64,5 +80,6 @@ func main()  {
 	router.Route("/test2", func(r chi.Router) {
 		r.Get("/", test2)
 	})
+
 	http.ListenAndServe(":" + port, router)
 }

@@ -2,9 +2,10 @@ package postgres
 
 import (
 	"database/sql"
+	_ "encoding/json"
 	"fmt"
 	"os"
-	// "syscall"
+	_ "syscall"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -15,6 +16,27 @@ import (
 type DbHandler struct {
 	DB *sql.DB
 }
+
+//type JournalData struct {
+//	Name		string	`json:"name"`
+//	LocationId	string	`json:"locationId"`
+//	TerminalId	string	`json:"terminalId"`
+//	UseBegin	string	`json:"useBegin"`
+//	UseEnd		string	`json:"useEnd"`
+//}
+
+//type TermlData struct {
+//	Name		string	`json:"name"`
+//	LocationId	string	`json:"locationId"`
+//	TerminalId	string	`json:"terminalId"`
+//	UseBegin	string	`json:"useBegin"`
+//	UseEnd		string	`json:"useEnd"`
+//}
+
+//type WhoUse struct {
+//	Name		string	`json:"name"`
+//	LocationId	string	`json:"locationId"`
+//}
 
 func getDBHadler() *DbHandler {
 	connStr := getDsn()
@@ -48,7 +70,7 @@ func InitDBTables() {
 	_, err = DbHandler.DB.Query(query)
 	if err != nil {
 		log.WithFields(log.Fields{
-			"db":  "tasks",
+			"table":  "register_journal.register_info",
 			"err": err,
 		}).Fatal("DB CREATE ERROR")
 	}
@@ -66,7 +88,7 @@ func RegisterNewUser(userName, locationId, terminalId string) {
 	_, err := DbHandler.DB.Exec(query, userName, locationId, terminalId, tGive, tBack)
 	if err != nil {
 		log.WithFields(log.Fields{
-			"func": "INSERT InsertNewDataCSV",
+			"func": "RegisterNewUser",
 			"err":  err,
 		}).Fatal("DB ERROR")
 	}
@@ -84,11 +106,83 @@ func UnregisterUser(terminalId string) {
 	_, err := DbHandler.DB.Exec(query, tGive, terminalId, thirdArg)
 	if err != nil {
 		log.WithFields(log.Fields{
-			"func": "INSERT update",
+			"func": "UnregisterUser",
 			"err":  err,
 		}).Fatal("DB ERROR")
 	}
 }
+
+
+//// Формирую в БД весь журнал и возвращаю, ругается на rows.Next() и rows.Scan() хотя это библиотечные фукнции "database/sql"
+//func GetJournalData() []*JournalData {
+//
+//	DbHandler := getDBHadler()
+//	defer DbHandler.DB.Close()
+//
+//	query := "SELECT employee_name, location_id, terminal_id, usage_begin_time, usage_end_time FROM register_journal.register_info"
+//	rows, err := DbHandler.DB.Exec(query)
+//	if err != nil {
+//		log.WithFields(log.Fields{
+//			"func": "GetJournalData",
+//			"err":  err,
+//		}).Fatal("DB ERROR")
+//	}
+//	bks := make([]*JournalData, 0)
+//	for rows.Next() {
+//		bk := new(JournalData)
+//		rows.Scan(&bk.Name, &bk.LocationId ,&bk.TerminalId, &bk.UseBegin, &bk.UseEnd)
+//		bks = append(bks, bk)
+//	}
+//	return bks
+//}
+
+//// Аналогичная проблема.
+//func TermHistory(termID string) []*TermlData {
+//
+//	DbHandler := getDBHadler()
+//	defer DbHandler.DB.Close()
+//
+//	query := "SELECT employee_name, location_id, terminal_id, usage_begin_time, usage_end_time FROM register_journal.register_info WHERE terminal_id = $1"
+//	rows, err := DbHandler.DB.Exec(query, termID)
+//	if err != nil {
+//		log.WithFields(log.Fields{
+//			"func": "TermHistory",
+//			"err":  err,
+//		}).Fatal("DB ERROR")
+//	}
+//	bks := make([]*TermlData, 0)
+//	for rows.Next() {
+//		bk := new(TermlData)
+//		rows.Scan(&bk.Name, &bk.LocationId ,&bk.TerminalId, &bk.UseBegin, &bk.UseEnd)
+//		bks = append(bks, bk)
+//	}
+//	return bks
+//}
+
+//// Аналогичная проблема.
+//func FindTerminal(termID string) []*WhoUse {
+//
+//	DbHandler := getDBHadler()
+//	defer DbHandler.DB.Close()
+//
+//	thirdArg := "Using"
+//	query := "SELECT employee_name, location_id, terminal_id, usage_begin_time, usage_end_time FROM register_journal.register_info WHERE terminal_id = $1 AND usage_end_time = $2"
+//	rows, err := DbHandler.DB.Exec(query, termID, thirdArg)
+//	if err != nil {
+//		log.WithFields(log.Fields{
+//			"func": "FindTerminal",
+//			"err":  err,
+//		}).Fatal("DB ERROR")
+//	}
+//	bks := make([]*WhoUse, 0)
+//	for rows.Next() {
+//		bk := new(WhoUse)
+//		rows.Scan(&bk.Name, &bk.LocationId)
+//		bks = append(bks, bk)
+//	}
+//	return bks
+//}
+
 
 func getDsn() string {
 
@@ -104,6 +198,3 @@ func getDsn() string {
 
 	return dsn
 }
-
-
-//select employee_name, location_id, terminal_id, usage_begin_time, usage_end_time from register_journal.register_info;
