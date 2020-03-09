@@ -21,7 +21,7 @@ services:
   postgres:
     image: postgres:9.6.17
     volumes:
-#      - ./data/pgsql:/var/lib/postgresql/data
+      - ./data/pgsql:/var/lib/postgresql/data
       - pgsql:/var/lib/postgresql/data
       - pgconf:/etc/postgresql
       - pglog:/var/log/postgresql
@@ -37,13 +37,13 @@ services:
       - postgres_net
     container_name: postgres
 
-volumes:
-  pgsql:
-    driver: local
-  pgconf:
-    driver: local
-  pglog:
-    driver: local
+#volumes:
+#  pgsql:
+#    driver: local
+#  pgconf:
+#    driver: local
+#  pglog:
+#    driver: local
 
 networks:
 #  teminal_net:
