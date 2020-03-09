@@ -22,9 +22,9 @@ services:
     image: postgres:9.6.17
     volumes:
       - ./data/pgsql:/var/lib/postgresql/data
-      - pgsql:/var/lib/postgresql/data
-      - pgconf:/etc/postgresql
-      - pglog:/var/log/postgresql
+#      - pgsql:/var/lib/postgresql/data
+#      - pgconf:/etc/postgresql
+#      - pglog:/var/log/postgresql
     ports:
       - ${POSTGRES_PORT}:5432
     environment:
