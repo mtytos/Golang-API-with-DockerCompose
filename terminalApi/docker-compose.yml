@@ -21,10 +21,10 @@ services:
   postgres:
     image: postgres:9.6.17
     volumes:
-      - ./data/pgsql:/var/lib/postgresql/data
-#      - pgsql:/var/lib/postgresql/data
-#      - pgconf:/etc/postgresql
-#      - pglog:/var/log/postgresql
+#      - ./data/pgsql:/var/lib/postgresql/data
+      - pgsql:/var/lib/postgresql/data
+      - pgconf:/etc/postgresql
+      - pglog:/var/log/postgresql
     ports:
       - ${POSTGRES_PORT}:5432
     environment:
@@ -37,15 +37,17 @@ services:
       - postgres_net
     container_name: postgres
 
-#volumes:
-#  pgsql:
-#    driver: local
-#  pgconf:
-#    driver: local
-#  pglog:
-#    driver: local
+volumes:
+  pgsql:
+    driver: local
+  pgconf:
+    driver: local
+  pglog:
+    driver: local
 
 networks:
+#  teminal_net:
+#    external: false
   postgres_net:
     driver: bridge
     ipam:

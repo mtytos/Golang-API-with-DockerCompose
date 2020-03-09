@@ -14,6 +14,11 @@ type UserData struct {
 	TerminalId	string	`json:"terminalId"`
 }
 
+type TermData struct {
+	TerminalId	string	`json:"terminalId"`
+}
+
+// Регистрация терминала
 func RegisterTerm(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
@@ -31,6 +36,7 @@ func RegisterTerm(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Возврат терминала сотрудником
 func UnregisterTerm(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
@@ -48,7 +54,7 @@ func UnregisterTerm(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Эта функция возвращает весь журнал действий, но она почему-то не хочет работать
+// Это функция возвращает весь журнал действий
 func AllTermData(w http.ResponseWriter, r *http.Request) {
 
 	jsonData, err := json.Marshal(postgres.GetJournalData())
@@ -60,7 +66,7 @@ func AllTermData(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
-// Функция возвращает всю историю об одном терминале
+// Функция возвращает Историю одного терминала
 func InfoAboutTerm(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
@@ -68,7 +74,7 @@ func InfoAboutTerm(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err.Error())
 		}
-		userData := new(UserData)
+		userData := new(TermData)
 		err = json.Unmarshal(data, &userData)
 		if err != nil {
 			log.Fatal(err)
@@ -84,7 +90,7 @@ func InfoAboutTerm(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Функция возвращает инфо о том кто его использует в настоящее время
+// Функция возвращает инфо Кто сейчас использует терминал
 func WhoUseTerminal(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
@@ -92,7 +98,7 @@ func WhoUseTerminal(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err.Error())
 		}
-		userData := new(UserData)
+		userData := new(TermData)
 		err = json.Unmarshal(data, &userData)
 		if err != nil {
 			log.Fatal(err)
@@ -106,13 +112,4 @@ func WhoUseTerminal(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(jsonData)
 	}
-}
-
-
- // DEBUG
-func AllTermData2() ([]byte, error) {
-
-	jsonData := postgres.GetJournalData()
-
-	return json.MarshalIndent(jsonData, " ", " ")
 }
