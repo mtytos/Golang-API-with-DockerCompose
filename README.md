@@ -8,9 +8,9 @@
   4. docker-compose up</em><br><br>
 
 <b><em>Не композится?</b></em><br>
-ubuntu - попробуйте с "sudo"<br> / запустите docker-machine
-windows - измените на volumes local / если не бридж запускайте от админа<br>
-macos - все работало прекрасно<br>
+- ubuntu - попробуйте с "sudo" / запустите docker-machine<br>
+- windows - измените на volumes local / если не бридж запускайте от админа<br>
+- macos - все работало прекрасно<br>
 <br>
 
 <b>Роуты</b><br>
