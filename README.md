@@ -21,7 +21,7 @@
 - Узнать кто сейчас использует терминал - <b>"/WhoUseTerminal"</b><br><em>(принимаемые json данные terminalId)</em><br>
 <br>
 
-<b>Тесты лучше юзайте свои<b><br>
+<b>Тесты лучше написать свои<b><br>
 
 ## Author
 * **Ilya Mekke** - [mtytos](https://github.com/mtytos)
