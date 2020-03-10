@@ -14,8 +14,8 @@
 <br>
 
 <b>Роуты</b><br>
-- Регистрация выдачи терминала в журнале - <b>"/registerTerm"</b><br><em>(принимаемые json данные name,locationId,terminalId)</em><br>
-- Регистрация возврата терминала в журнале - <b>"/UnregisterTerm"</b><br><em>(принимаемые json данные name,locationId,terminalId)</em><br>
+- Регистрация выдачи терминала в журнале - <b>"/registerTerm"</b><br><em>(принимаемые json данные name, locationId, terminalId)</em><br>
+- Регистрация возврата терминала в журнале - <b>"/UnregisterTerm"</b><br><em>(принимаемые json данные name, locationId, terminalId)</em><br>
 - Получить все данные журнала - <b>"/AllTermData"</b><br><em>(ничего не принимает, просто выдает данные)</em><br>
 - Получить историю об одном терминале - <b>"/InfoAboutTerm"</b><br><em>(принимаемые json данные terminalId)</em><br>
 - Узнать кто сейчас использует терминал - <b>"/WhoUseTerminal"</b><br><em>(принимаемые json данные terminalId)</em><br>
