@@ -2,8 +2,8 @@
 <em>Мой первый небольшой проект на Go. На изучение и реализацию было всего 2 дня :)</em>
 <br>
 ### Usage<br>
-1. Docker-compose build<br>
-2. Docker-compose up<br>
+<em>Docker-compose build</em><br>
+<em>Docker-compose up</em><br>
 <br>
 <b><em>Не композится?</b></em><br>
 ubuntu - попробуйте с "sudo"<br>
